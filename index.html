@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لعبة الطقس العربية ☀️</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ===== SCREEN: MENU ===== -->
+  <div id="screen-menu" class="screen active">
+    <div class="sun-bg">
+      <div class="sun-circle"></div>
+      <div class="cloud cloud1">☁️</div>
+      <div class="cloud cloud2">⛅</div>
+      <div class="cloud cloud3">🌤️</div>
+    </div>
+    <div class="menu-card">
+      <div class="menu-emoji">🌤️</div>
+      <h1>لعبة الطقس العربية</h1>
+      <p class="subtitle">by: syafanaila</p>
+      <p class="desc">Belajar kosakata cuaca dalam bahasa Arab dengan seru!</p>
+      <button class="btn-primary" onclick="showScreen('screen-level-select')">🎮 Mulai Belajar</button>
+      <button class="btn-secondary" onclick="showScreen('screen-materi')">📖 Lihat Materi</button>
+    </div>
+  </div>
+
+  <!-- ===== SCREEN: MATERI ===== -->
+  <div id="screen-materi" class="screen">
+    <div class="materi-header">
+      <button class="btn-back" onclick="showScreen('screen-menu')">← Kembali</button>
+      <h2>📖 Materi Kosakata Cuaca</h2>
+    </div>
+    <div class="materi-body">
+
+      <div class="materi-section">
+        <h3>⭐ Level 1 — Kosakata Dasar</h3>
+        <p class="materi-desc">Pasangkan kata Arab dengan emoji yang sesuai!</p>
+        <div class="vocab-grid" id="vocab-grid-l1"></div>
+      </div>
+
+      <div class="materi-section">
+        <h3>⭐⭐ Level 2 — Kalimat Pendek</h3>
+        <p class="materi-desc">Lengkapi kalimat <strong>كَيْفَ الْجَوُّ؟</strong> (Bagaimana cuacanya?)</p>
+        <div class="vocab-grid" id="vocab-grid-l2"></div>
+      </div>
+
+      <div class="materi-section">
+        <h3>⭐⭐⭐ Level 3 — Pemahaman Cerita</h3>
+        <p class="materi-desc">Baca cerita pendek lalu jawab pertanyaannya!</p>
+        <div class="story-examples" id="story-examples"></div>
+      </div>
+
+      <div class="materi-tips">
+        <h3>💡 Tips Belajar</h3>
+        <ul>
+          <li>Baca kata Arab dengan keras untuk melatih pelafalan</li>
+          <li>Perhatikan harakat (tanda baca) di atas huruf</li>
+          <li>Hafal emoji yang cocok untuk setiap cuaca</li>
+          <li>Pelajari pola: <strong>الْجَوُّ + sifat cuaca</strong></li>
+        </ul>
+      </div>
+
+      <button class="btn-primary btn-center" onclick="showScreen('screen-level-select')">🎮 Siap Bermain!</button>
+    </div>
+  </div>
+
+  <!-- ===== SCREEN: LEVEL SELECT ===== -->
+  <div id="screen-level-select" class="screen">
+    <div class="level-header">
+      <button class="btn-back" onclick="showScreen('screen-menu')">← Kembali</button>
+      <h2>Pilih Level</h2>
+    </div>
+    <div class="level-cards">
+      <div class="level-card" onclick="startGame(1)">
+        <div class="level-icon">⭐</div>
+        <h3>Level 1</h3>
+        <p>Kosakata Dasar</p>
+        <small>Pasangkan kata ↔ emoji</small>
+      </div>
+      <div class="level-card" onclick="startGame(2)">
+        <div class="level-icon">⭐⭐</div>
+        <h3>Level 2</h3>
+        <p>Kalimat Pendek</p>
+        <small>Lengkapi kalimat cuaca</small>
+      </div>
+      <div class="level-card" onclick="startGame(3)">
+        <div class="level-icon">⭐⭐⭐</div>
+        <h3>Level 3</h3>
+        <p>Cerita Pendek</p>
+        <small>Baca dan jawab pertanyaan</small>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SCREEN: GAME ===== -->
+  <div id="screen-game" class="screen">
+    <div class="game-topbar">
+      <button class="btn-quit" onclick="quitGame()">✕ Keluar</button>
+      <div class="game-stats">
+        <span class="stat-badge">⭐ <span id="score">0</span></span>
+        <span class="stat-badge">❤️ <span id="lives">3</span></span>
+        <span class="stat-badge timer-badge">⏱ <span id="timer">10</span>s</span>
+      </div>
+      <div class="level-badge">Level <span id="current-level">1</span></div>
+    </div>
+
+    <div class="progress-bar-wrap">
+      <div class="progress-bar" id="progress-bar"></div>
+    </div>
+
+    <div class="question-box">
+      <div id="question-label" class="question-label"></div>
+      <div id="word" class="word-display">شَمْسٌ</div>
+    </div>
+
+    <div class="choices" id="choices"></div>
+
+    <div id="feedback" class="feedback hidden"></div>
+  </div>
+
+  <!-- ===== SCREEN: RESULT ===== -->
+  <div id="screen-result" class="screen">
+    <div class="result-card">
+      <div id="result-emoji" class="result-emoji">🌟</div>
+      <h2 id="result-title">Selesai!</h2>
+      <p id="result-msg">Kamu hebat!</p>
+      <div class="result-stars" id="result-stars"></div>
+      <div class="result-score">Skor: <span id="result-score-val">0</span></div>
+      <button class="btn-primary" onclick="showScreen('screen-level-select')">🔁 Main Lagi</button>
+      <button class="btn-secondary" onclick="showScreen('screen-menu')">🏠 Menu Utama</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
